@@ -492,13 +492,6 @@ function renderTable(){
   empty.style.display = (filtered.length === 0) ? "block" : "none";
 }
 
-function viewProject(projectId){
-  alert("View Project clicked for: " + projectId);
-}
-
-document.getElementById("requestMatterBtn").addEventListener("click", () => {
-  alert("Request New Matter clicked (placeholder).");
-});
 
 document.getElementById("searchInput").addEventListener("input", renderTable);
 
