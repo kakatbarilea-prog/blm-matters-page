@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BLM Portal — Matters</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<style>
+  :root{
+    --navy:#0F2D56;
+    --navyHover:#0c2343;
+    --gold:#B98000;
+    --muted:#6B7280;
+    --border:#E5E7EB;
+    --soft:#F5F7FB;
+    --cardShadow: 0 4px 18px rgba(0,0,0,0.06);
+    --hoverBg:#EDF2FA;
+    --theadGray:#F1F1F1;
+    --panelShadow: 0 12px 38px rgba(0,0,0,0.10);
+  }
+
+  body{
+    margin:0;
+    background:#f5f6f8;
+    font-family: Calibri, Arial, sans-serif;
+    color: var(--navy);
+  }
+
+  .page-wrap{
+    width: 100%;
+    margin: 0;
+    padding: 26px 26px 60px;
+    box-sizing: border-box;
+  }
+
+  /* OUTER PANEL like the screenshot container */
+  .outer-panel{
+    width: 100%;
+    background:#fff;
+    border-radius: 0;
+    box-shadow: var(--panelShadow);
+    border: 1px solid #eef0f5;
+    overflow:hidden;
+  }
+
+  /* Header bar INSIDE the outer panel */
+  .blue-header{
+    background: var(--navy);
+    color:#fff;
+    padding: 22px 20px;
+    border-radius: 0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.10);
+  }
+
+  .blue-header h1{
+    margin:0;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing:.2px;
+  }
+
+  /* Inner content spacing like screenshot */
+  .panel-body{
+    padding: 22px 20px 26px;
+    background:#fff;
+  }
+
+  /* Main card container */
+  .card-shell{
+    width: 100%;
+    background:#fff;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    overflow:hidden;
+  }
+
+  /* Search + button row */
+  .top-controls{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap: 14px;
+    padding: 0 0 14px 0;
+    background:#fff;
+  }
+
+  .search{
+    position:relative;
+    width: 420px;
+    max-width: 100%;
+  }
+
+  .search input{
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 2px;
+    border: 1px solid #d5d7dc;
+    font-size: 14px;
+    outline:none;
+    box-sizing: border-box;
+  }
+
+  .search input:focus{
+    border-color: rgba(15,45,86,0.55);
+    box-shadow: 0 0 0 3px rgba(15,45,86,0.08);
+  }
+
+  .request-btn{
+    background: var(--navy);
+    color:#fff;
+    padding: 12px 22px; /* slightly taller + longer */
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    white-space: nowrap;
+  }
+  .request-btn:hover{ background: var(--navyHover); }
+
+  /* Tabs */
+  .tabs{
+    display:flex;
+    gap: 10px;
+    padding: 16px 0 18px;
+    background:#fff;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    flex-wrap:wrap;
+  }
+
+  .tab{
+    border: 1px solid var(--navy);
+    background:#fff;
+    color: var(--navy);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor:pointer;
+    display:inline-flex;
+    gap: 10px;
+    align-items:center;
+    user-select:none;
+  }
+
+  .tab:hover{ background:#f3f6fb; }
+
+  .tab.active{
+    background: #edf2fa;
+  }
+
+  .count{
+    font-size: 12px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background:#fff;
+    border:1px solid rgba(15,45,86,0.18);
+    color: var(--navy);
+  }
+
+  /* Table */
+  .table-wrap{
+    overflow-x:hidden;
+    background:#fff;
+    padding: 12px 0 0;
+  }
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+  }
+
+  thead th{
+    text-align:left;
+    padding: 13px 14px;
+    font-size: 13px;
+    color: #111827;
+    border-bottom: 1px solid #d9d9d9;
+    background: var(--theadGray);
+    white-space: nowrap;
+  }
+
+  tbody td{
+    padding: 14px 14px;
+    border-bottom: 1px solid #eef0f5;
+    font-size: 14px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  tbody tr:hover{
+    background: var(--hoverBg);
+  }
+
+  /* Attorney cell w headshot */
+  .attorney{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+
+  .avatar{
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(15,45,86,0.15);
+  }
+
+  .attorney .name{
+    font-weight: 800;
+    color: var(--navy);
+    font-size: 14px;
+    line-height: 1.1;
+  }
+
+  /* Status badge */
+  .status{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    border: 1px solid rgba(15,45,86,0.18);
+    background:#f7f8fb;
+    color: var(--navy);
+  }
+
+  .status .dot{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--navy);
+    opacity: .85;
+  }
+
+  .status.pending{
+    border-color: rgba(185,128,0,0.30);
+    background:#fffaf1;
+    color: var(--gold);
+  }
+  .status.pending .dot{ background: var(--gold); }
+
+  .status.closed{
+    border-color: rgba(34,197,94,0.35);
+    background: rgba(34,197,94,0.10);
+    color: #15803D;
+  }
+  .status.closed .dot{ background:#22C55E; }
+
+  /* View button */
+  .btn-view{
+    background: var(--navy);
+    color:#fff;
+    border:none;
+    border-radius: 3px;
+    padding: 9px 12px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor:pointer;
+    display:inline-flex;
+    gap: 8px;
+    align-items:center;
+    white-space: nowrap;
+  }
+  .btn-view:hover{ background: var(--navyHover); }
+
+  /* Empty state */
+  .empty{
+    padding: 42px 22px;
+    text-align:center;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  @media (max-width: 760px){
+    .page-wrap{ padding: 18px 14px 60px; }
+    .top-controls{ flex-direction:column; align-items:stretch; }
+    .search{ width:100%; }
+  }
+</style>
+</head>
+
+<body>
+  <div class="page-wrap">
+
+    <!-- BIG OUTER CONTAINER (uniform with other pages) -->
+    <div class="outer-panel">
+
+      <!-- Header inside the container -->
+      <div class="blue-header">
+        <h1>Matters</h1>
+      </div>
+
+      <div class="panel-body">
+
+        <div class="card-shell">
+
+          <!-- Search left, button right -->
+          <div class="top-controls">
+            <div class="search">
+              <input id="searchInput" type="text" placeholder="Search status, project name, matter name, attorney, ID..." />
+            </div>
+
+            <button class="request-btn" id="requestMatterBtn">
+              <i class="fa-solid fa-plus"></i>
+              Request New Matter
+            </button>
+          </div>
+
+          <!-- Tabs row -->
+          <div class="tabs" id="tabs"></div>
+
+          <!-- Table -->
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Project Name</th>
+                  <th>Matter Name</th>
+                  <th>Managing Attorney</th>
+                  <th>Project ID</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="tbody"></tbody>
+            </table>
+
+            <div class="empty" id="emptyState" style="display:none;">
+              No matters to show right now.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+/* ==========================================================
+   BLM Matters Page (Demo)
+   - Tabs: All, Current, Requested, Closed, On the Docket
+   - Search filtering
+   - Placeholder buttons (no real routing)
+   ========================================================== */
+
+const headshots = {
+  "Jessica Cahoon": "https://d34hmiuaex7c0.cloudfront.net/5052/uploads/profile/staffuser/5060/1666032537644.jpg"
+};
+
+const matters = [
+  {
+    tab: "current",
+    statusLabel: "In Progress",
+    statusType: "current",
+    projectName: "Customer Agreement",
+    matterName: "Miscellaneous Legal Work",
+    managingAttorney: "Jessica Cahoon",
+    projectId: "295451"
+  },
+  {
+    tab: "closed",
+    statusLabel: "Completed",
+    statusType: "closed",
+    projectName: "Review Privacy Policy for Paul Mitchell Temecula",
+    matterName: "Privacy Policy",
+    managingAttorney: "Jessica Cahoon",
+    projectId: "295452"
+  },
+  {
+    tab: "pending",
+    statusLabel: "Pending Review",
+    statusType: "pending",
+    projectName: "Operating Agreement for Paul Mitchell Temecula",
+    matterName: "Operating Agreement",
+    managingAttorney: "Jessica Cahoon",
+    projectId: "295453"
+  }
+];
+
+const TAB_DEFS = [
+  { key:"all",     label:"All Matters" },
+  { key:"current", label:"Current Matters" },
+  { key:"pending", label:"Requested Matters" },
+  { key:"closed",  label:"Closed Matters" },
+  { key:"docket",  label:"On the Docket" }
+];
+
+let activeTab = "all";
+
+function countByTab(key){
+  if(key === "all") return matters.length;
+  return matters.filter(m => m.tab === key).length;
+}
+
+function renderTabs(){
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = "";
+
+  TAB_DEFS.forEach(t => {
+    const btn = document.createElement("button");
+    btn.className = "tab" + (t.key === activeTab ? " active" : "");
+    btn.type = "button";
+    btn.innerHTML = `
+      ${t.label}
+      <span class="count">${countByTab(t.key)}</span>
+    `;
+    btn.onclick = () => {
+      activeTab = t.key;
+      document.getElementById("searchInput").value = "";
+      renderTabs();
+      renderTable();
+    };
+    tabs.appendChild(btn);
+  });
+}
+
+function statusHTML(m){
+  if(m.statusType === "pending"){
+    return `<span class="status pending"><span class="dot"></span>${m.statusLabel}</span>`;
+  }
+  if(m.statusType === "closed"){
+    return `<span class="status closed"><span class="dot"></span>${m.statusLabel}</span>`;
+  }
+  return `<span class="status"><span class="dot"></span>${m.statusLabel}</span>`;
+}
+
+function rowHTML(m){
+  const shot = headshots[m.managingAttorney] || "";
+  return `
+    <tr>
+      <td>${statusHTML(m)}</td>
+      <td><b>${escapeHtml(m.projectName)}</b></td>
+      <td>${escapeHtml(m.matterName)}</td>
+      <td>
+        <div class="attorney">
+          <img class="avatar" src="${shot}" alt="${escapeHtml(m.managingAttorney)}" />
+          <div class="name">${escapeHtml(m.managingAttorney)}</div>
+        </div>
+      </td>
+      <td><span style="font-weight:800;">${escapeHtml(m.projectId)}</span></td>
+      <td>
+        <button class="btn-view" type="button" onclick="viewProject('${escapeHtml(m.projectId)}')">
+          View Project
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </td>
+    </tr>
+  `;
+}
+
+function renderTable(){
+  const tbody = document.getElementById("tbody");
+  const empty = document.getElementById("emptyState");
+  const q = (document.getElementById("searchInput").value || "").trim().toLowerCase();
+
+  let filtered = matters.slice();
+
+  if(activeTab !== "all"){
+    filtered = filtered.filter(m => m.tab === activeTab);
+  }
+
+  if(q){
+    filtered = filtered.filter(m => {
+      const hay = [
+        m.statusLabel, m.projectName, m.matterName, m.managingAttorney, m.projectId
+      ].join(" ").toLowerCase();
+      return hay.includes(q);
+    });
+  }
+
+  tbody.innerHTML = filtered.map(rowHTML).join("");
+
+  empty.style.display = (filtered.length === 0) ? "block" : "none";
+}
+
+function viewProject(projectId){
+  alert("View Project clicked for: " + projectId);
+}
+
+document.getElementById("requestMatterBtn").addEventListener("click", () => {
+  alert("Request New Matter clicked (placeholder).");
+});
+
+document.getElementById("searchInput").addEventListener("input", renderTable);
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+renderTabs();
+renderTable();
+</script>
+
+</body>
+</html>
