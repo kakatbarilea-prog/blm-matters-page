@@ -288,20 +288,21 @@
 
   /* View button */
   .btn-view{
-    background: var(--navy);
-    color:#fff;
-    border:none;
-    border-radius: 3px;
-    padding: 9px 12px;
+    background:#fff;
+    border:0px 
+    color: var(--navy);
+    border-radius: 6px;
+    padding: 8px 12px;
     font-size: 13px;
     font-weight: 600;
     cursor:pointer;
     display:inline-flex;
-    gap: 8px;
+    gap:8px;
     align-items:center;
     white-space: nowrap;
   }
-  .btn-view:hover{ background: var(--navyHover); }
+  .btn-view:hover{    background:#F3F6FB;
+    border-color:#c7cdd8; }
 
   /* Empty state */
   .empty{
@@ -489,7 +490,7 @@ function rowHTML(m){
       <td>
         <button class="btn-view" type="button" onclick="viewProject('${escapeHtml(m.projectId)}')">
           View Project
-          <i class="fa-solid fa-arrow-right"></i>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
         </button>
       </td>
     </tr>
